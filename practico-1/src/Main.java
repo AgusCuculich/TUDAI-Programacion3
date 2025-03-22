@@ -19,5 +19,18 @@ public class Main {
         System.out.println(nombres.size());
         System.out.println(nombres.indexOf("pablo"));
         System.out.println(nombres.get(1));
+
+        
+        // Iterator con WHILE
+        /* LinkedListIterator<String> it = nombres.iterator();
+        while(it.hasNext()) {
+            System.out.println(it.next());
+        }*/
+
+        // Iterator con FOREACH
+        // No es necesario instanciar un iterator ya que el propio foreach lo hace por nosotros.
+        for(String nombre : nombres) {
+            System.out.println(nombre);
+        }
     }
 }

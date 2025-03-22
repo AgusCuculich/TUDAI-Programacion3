@@ -1,4 +1,6 @@
-public class MySimpleLinkedList<T> {
+import java.util.Iterator;
+
+public class MySimpleLinkedList<T> implements Iterable<T>{
 
     private Node<T> first;
     private int size;
@@ -78,6 +80,10 @@ public class MySimpleLinkedList<T> {
         }
 
         return resultado;
+    }
+
+    public LinkedListIterator<T> iterator() {
+        return new LinkedListIterator<>(this.first);
     }
 
 }
