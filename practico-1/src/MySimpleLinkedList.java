@@ -3,10 +3,12 @@ import java.util.Iterator;
 public class MySimpleLinkedList<T> implements Iterable<T>{
 
     private Node<T> first;
+    private Node<T> last;
     private int size;
 
     public MySimpleLinkedList() {
         this.first = null;
+        this.last = null;
         this.size = 0;
     }
 
@@ -14,7 +16,22 @@ public class MySimpleLinkedList<T> implements Iterable<T>{
         Node<T> nuevoNodo = new Node<>(info,null);
         nuevoNodo.setNext(this.first);
         this.first = nuevoNodo;
-        this.size+=1;
+        this.size++;
+    }
+
+    public void insertLast(T info) {
+        Node<T> nuevoNodo = new Node<>(info, null);
+        if(this.last == null) {
+            // Si la lista está vacía fist y last deben apuntar al nuevo nodo.
+            this.first = nuevoNodo;
+            this.last = nuevoNodo;
+        } else {
+            // Como last siempre guarda la última posicion, si se añade un nuevo nodo, hacemos que este apunte al viejo
+            // last y se posicione último en la lista.
+            this.last.setNext(nuevoNodo);
+            this.last = nuevoNodo;
+        }
+        this.size++;
     }
 
     public T extractFront() {

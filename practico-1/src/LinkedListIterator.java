@@ -16,4 +16,9 @@ public class LinkedListIterator<T> implements Iterator<T>{
         this.current = this.current.getNext();
         return info;
     }
+
+    // Devuelve la info del nodo actual sin pasar al sig.
+    public T get() {
+        return this.current.getInfo();
+    }
 }
