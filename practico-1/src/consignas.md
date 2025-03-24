@@ -46,7 +46,22 @@ for(String nombre : nombres) {
 5) 
 a)
 ````java
+MySimpleLinkedList<Integer> list1 = new MySimpleLinkedList<>();
+list1.insertFront(20);
+list1.insertFront(22);
+list1.insertFront(30);
+list1.insertFront(10);
+list1.insertFront(15);
 
+MySimpleLinkedList<Integer> list2 = new MySimpleLinkedList<>();
+list2.insertFront(30);
+list2.insertFront(5);
+list2.insertFront(20);
+list2.insertFront(10);
+list2.insertFront(35);
+
+System.out.println(list1);
+System.out.println(list2);
 ````
 b)
 ````java
@@ -89,6 +104,44 @@ public static MySimpleLinkedList<Integer> elementosComunes(MySimpleLinkedList<In
             resultado.insertLast(it1.get());
             it1.next();
             it2.next();
+        }
+    }
+    return resultado;
+}
+````
+
+6.
+````java
+public static void main(String[] args) {
+    MySimpleLinkedList<Integer> list1 = new MySimpleLinkedList<>();
+    list1.insertFront(20);
+    list1.insertFront(22);
+    list1.insertFront(30);
+    list1.insertFront(10);
+    list1.insertFront(15);
+
+    MySimpleLinkedList<Integer> list2 = new MySimpleLinkedList<>();
+    list2.insertFront(30);
+    list2.insertFront(5);
+    list2.insertFront(20);
+    list2.insertFront(10);
+    list2.insertFront(35);
+
+    System.out.println(list1);
+    System.out.println(list2);
+
+    MySimpleLinkedList<Integer> unicos = elementosUnicos(list1, list2);
+
+    System.out.println(unicos);
+}
+public static MySimpleLinkedList<Integer> elementosUnicos(MySimpleLinkedList<Integer> list1, MySimpleLinkedList<Integer> list2) {
+    MySimpleLinkedList<Integer> resultado = new MySimpleLinkedList<>();
+    Iterator<Integer> it1 = list1.iterator();
+
+    while(it1.hasNext()) {
+        Integer elem = it1.next();  // Guardamos la info del nodo y pasamos al sig
+        if(!list2.contains(elem)) {
+            resultado.insertFront(elem);
         }
     }
     return resultado;

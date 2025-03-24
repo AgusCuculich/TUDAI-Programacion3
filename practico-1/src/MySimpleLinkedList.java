@@ -1,6 +1,7 @@
+import java.util.Comparator;
 import java.util.Iterator;
 
-public class MySimpleLinkedList<T> implements Iterable<T>{
+public class MySimpleLinkedList<T> implements Iterable<T>, Comparable<T> {
 
     private Node<T> first;
     private Node<T> last;
@@ -103,4 +104,20 @@ public class MySimpleLinkedList<T> implements Iterable<T>{
         return new LinkedListIterator<>(this.first);
     }
 
+    public int compareTo(T elemento) {
+        return this.compareTo(elemento);
+    }
+
+    public boolean contains(T elemento) {
+        // Creamos un puntero que apunte hacia el primer elemento de la lista.
+        Node<T> actual = this.first;
+        while (actual != null) {
+            // Recorre cada nodo para verificar si su info coincide con la del elemento.
+            if (actual.getInfo().equals(elemento)) {
+                return true;  // Se encontró una coincidencia
+            }
+            actual = actual.getNext();
+        }
+        return false;  // No se encontró una coincidencia
+    }
 }
