@@ -1,3 +1,5 @@
+package practico_1;
+
 import java.util.Iterator;
 
 public class LinkedListIterator<T> implements Iterator<T>{

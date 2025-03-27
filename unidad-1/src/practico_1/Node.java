@@ -1,3 +1,5 @@
+package practico_1;
+
 public class Node<T> {
     /*
      * La <T> en public class Node<T> {} indica que la clase Node es genérica en Java.
