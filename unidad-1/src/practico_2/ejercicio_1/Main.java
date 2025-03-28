@@ -6,27 +6,35 @@ public class Main {
         System.out.println(ordenadoDesc(arr1, 0));
     }
 
+    // Evalua el caso de que el arr este ordenado ascendentemente
     public static boolean ordenadoAsc(int[] arr, int pos) {
+        // Verificamos que hayan ingresado una posición válida
         if (pos < 0 || pos >= arr.length) {
             return false;
         }
         if(pos < arr.length-1) {
             if(arr[pos] > arr[pos+1]) {
+                // Si el elemento actual es mayor que el siguiente, el arreglo no está ordenado de forma ascendente.
                 return false;
             }
+            // Llamamos recursivamente a la función con la siguiente posición para verificar el resto del arreglo.
             return ordenadoAsc(arr, pos + 1);
         }
         return true;
     }
 
+    // Evalua el caso de que el arr este ordenado descendentemente
     public static boolean ordenadoDesc(int[] arr, int pos) {
+        // Verificamos que hayan ingresado una posición válida
         if (pos < 0 || pos >= arr.length) {
             return false;
         }
         if(pos < arr.length-1) {
+            // Si el elemento actual es menor que el siguiente, el arreglo no está ordenado de forma descendiente.
             if(arr[pos] < arr[pos+1]) {
                 return false;
             }
+            // Llamamos recursivamente a la función con la siguiente posición para verificar el resto del arreglo.
             return ordenadoDesc(arr, pos + 1);
         }
         return true;
