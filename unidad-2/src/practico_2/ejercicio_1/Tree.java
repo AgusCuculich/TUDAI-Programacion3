@@ -1,5 +1,8 @@
 package practico_2.ejercicio_1;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Tree {
     private TreeNode root;
 
@@ -45,13 +48,13 @@ public class Tree {
         }
     }
 
+    // Devuelve el valor almacenado en el nodo raíz o null si el nodo no existe.
     public Integer getRoot() {
-        // Devuelve el valor almacenado en el nodo raíz o null si el nodo no existe.
         return this.root != null ? this.root.getValue() : null;
     }
 
+    // Informa si el árbol está vacío o no.
     public boolean isEmpty() {
-        // Informa si el árbol está vacío o no.
         return this.root == null;
     }
 
@@ -68,5 +71,134 @@ public class Tree {
         }
         // Retornamos el valor en el nodo hallado.
         return actual.getValue();
+    }
+
+    public boolean searchTraverse(TreeNode node, Integer value) {
+        if(node == null) {
+            return false;
+        }
+        if(node.getValue().equals(value)) {
+            return true;
+        }
+        if (value < node.getValue()) {
+            return searchTraverse(node.getLeft(), value);
+        } else {
+            return searchTraverse(node.getRight(), value);
+        }
+    }
+
+    // Informa si un valor si encuentra o no dentro del árbol.
+    public boolean hasElem(Integer value) {
+        if(this.isEmpty()) {
+            return false;
+        }
+        return searchTraverse(this.root, value);
+    }
+
+    /* Función anterior pero sin recursión.
+    public boolean hasElem(Integer value) {
+        // Nos aseguramos de que el árbol no esté vacío.
+        if(this.isEmpty()) {
+            return false;
+        }
+        TreeNode actual = this.root;
+        // Si el valor buscado es mayor que el valor en raíz recorremos el lado derecho del árbol.
+        if(value > this.getRoot()) {
+            // Nos movemos a través del árbol hasta que el sig sea null o hasta que hallamos encontrado el valor buscado
+            while(!actual.getValue().equals(value) && actual.getRight() != null) {
+                actual = actual.getRight();
+            }
+            // Retornamos si el valor del nodo sobre el que estamos parados es igual al valor buscado.
+            return actual.getValue().equals(value);
+        }
+        // Si el valor buscado es menor que el valor en raíz recorremos el lado izquierdo del árbol.
+        else if(value < this.getRoot()) {
+            // Nos movemos a través del árbol hasta que el sig sea null o hasta que hallamos encontrado el valor buscado
+            while(!actual.getValue().equals(value) && actual.getLeft() != null) {
+                actual = actual.getLeft();
+            }
+            // Retornamos si el valor del nodo sobre el que estamos parados es igual al valor buscado.
+            return actual.getValue().equals(value);
+        }
+        // Caso en el que el valor buscado y el valor del nodo sobre el que estamos son iguales.
+        else {
+            return true;
+        }
+    }
+     */
+
+    // Recorre el árbol para hacer los distintos tipos de impresiones.
+    private void printTraverse(TreeNode node, String recorrido) {
+        // Si el nodo es null imprime un - para visualizar mejor la estructura del árbol y corta.
+        if(node == null) {
+            System.out.print("-");
+            return;
+        }
+
+        if(recorrido.equals("preorder")) {
+            System.out.print(node.getValue());
+        }
+
+        // Llamada recursiva para imprimir todo el lado izq del árbol.
+        printTraverse(node.getLeft(), recorrido);   // Recorre el lado izquierdo
+
+        if(recorrido.equals("order")) {
+            System.out.print(node.getValue());
+        }
+
+        // Al alcanzar un nodo nulo, la recursión retrocede, desempilando las llamadas.
+        // Se continúa explorando el subárbol derecho.
+        printTraverse(node.getRight(), recorrido);  // Luego el lado derecho
+
+        if(recorrido.equals("posorder")) {
+            System.out.print(node.getValue());
+        }
+    }
+
+    public void printPreOrden() {
+        printTraverse(this.root, "preorder");
+    }
+
+    public void printInOrder() {
+        printTraverse(this.root, "order");
+    }
+
+    public void printPosOrder() {
+        printTraverse(this.root, "posorder");
+    }
+
+    private List<Integer> levelTraverse(TreeNode node, int count, int targetLevel) {
+        // Si el nodo es null retorna una lista vacía.
+        if(node == null) {
+            return new ArrayList<>();
+        }
+
+        // Cuando el contador es igual al nivel deseado crea una lista con el valor del nodo y de los nodos
+        // a su derecha e izquierda.
+        if(count == targetLevel) {
+            List<Integer> result = new ArrayList<>();
+            result.add(node.getValue());
+            result.add(node.getLeft().getValue());
+            result.add(node.getRight().getValue());
+            return result;
+        }
+
+        // Recorre el lado izq del árbol subiendo de nivel.
+        List<Integer> leftValues = levelTraverse(node.getLeft(),count+1, targetLevel);
+
+        // Recorre el lado izq del árbol subiendo de nivel.
+        List<Integer> rightValues = levelTraverse(node.getRight(), count+1, targetLevel);
+
+        // Unifica todos los valores hallados en el nivel deseado en una estructura.
+        leftValues.addAll(rightValues);
+
+        return leftValues;
+    }
+
+    public List<Integer> getElemAtLevel(int targetLevel) {
+        if(this.isEmpty()) {
+            return new ArrayList<>();
+        }
+        return levelTraverse(this.root, 0, targetLevel);
     }
 }
