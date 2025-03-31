@@ -200,7 +200,7 @@ public class Tree {
         return levelTraverse(this.root, 0, targetLevel);
     }
 
-    private List<Integer> leavesTraverse(TreeNode node) {
+    private List<Integer> getLeaves(TreeNode node) {
         if(node == null) {
             return new ArrayList<>();
         }
@@ -209,8 +209,8 @@ public class Tree {
             result.add(node.getValue());
             return result;
         }
-        List<Integer> leavesLeft = leavesTraverse(node.getLeft());
-        List<Integer> leavesRight = leavesTraverse(node.getRight());
+        List<Integer> leavesLeft = getLeaves(node.getLeft());
+        List<Integer> leavesRight = getLeaves(node.getRight());
 
         leavesLeft.addAll(leavesRight);
 
@@ -221,6 +221,26 @@ public class Tree {
         if(this.isEmpty()) {
             return new ArrayList<>();
         }
-        return leavesTraverse(this.root);
+        return getLeaves(this.root);
+    }
+
+    private int heightOfTree(TreeNode node) {   // Complejidad -> O(n) ya que visita cada nodo una vez
+        // La altura de un nodo se calcula de abajo hacia arriba, empezando en 0 para las hojas.
+        // En cada paso, tomamos la mayor altura entre sus hijos y sumamos 1
+        // para contar el arco que conecta el nodo actual con su hijo más profundo.
+        if(node == null) {
+            return -1;  // La áltura de un árbol con 1 elemento es 0, por lo tanto con 0 elementos es -1.
+        }
+        int leftDepth = heightOfTree(node.getLeft());   // Calcula altura del subárbol izquierdo
+        int rightDepth = heightOfTree(node.getRight()); // Calcula altura del subárbol derecho
+
+        return Math.max(leftDepth, rightDepth) + 1; // Devuelve la mayor altura + 1
+    }
+
+    public int getHeight() {
+        if(this.isEmpty()) {
+            return -1;
+        }
+        return heightOfTree(this.root);
     }
 }
