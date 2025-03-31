@@ -178,8 +178,6 @@ public class Tree {
         if(count == targetLevel) {
             List<Integer> result = new ArrayList<>();
             result.add(node.getValue());
-            result.add(node.getLeft().getValue());
-            result.add(node.getRight().getValue());
             return result;
         }
 
@@ -200,5 +198,29 @@ public class Tree {
             return new ArrayList<>();
         }
         return levelTraverse(this.root, 0, targetLevel);
+    }
+
+    private List<Integer> leavesTraverse(TreeNode node) {
+        if(node == null) {
+            return new ArrayList<>();
+        }
+        if(node.getLeft() == null && node.getRight() == null) {
+            List<Integer> result = new ArrayList<>();
+            result.add(node.getValue());
+            return result;
+        }
+        List<Integer> leavesLeft = leavesTraverse(node.getLeft());
+        List<Integer> leavesRight = leavesTraverse(node.getRight());
+
+        leavesLeft.addAll(leavesRight);
+
+        return leavesLeft;
+    }
+
+    public List<Integer> getFrontera() {
+        if(this.isEmpty()) {
+            return new ArrayList<>();
+        }
+        return leavesTraverse(this.root);
     }
 }
