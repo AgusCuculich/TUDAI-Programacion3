@@ -243,4 +243,105 @@ public class Tree {
         }
         return heightOfTree(this.root);
     }
+
+    // Elimina una hoja
+    private boolean leaveDelete(TreeNode node, Integer value) {
+        if(node == null) {
+            return false;
+        }
+
+        // Verifica si el hijo izquierdo es una hoja y debe ser eliminado
+        if(node.getLeft() != null && node.getLeft().getValue().equals(value)) {
+            if(node.getLeft().getLeft() == null && node.getLeft().getRight() == null) {
+                node.setLeft(null);
+                return true;    // Se encontró y eliminó la hoja
+            }
+        }
+        // Verifica si el hijo derecho es una hoja y debe ser eliminado
+        if(node.getRight() != null && node.getRight().getValue().equals(value)) {
+            if(node.getRight().getLeft() == null && node.getRight().getRight() == null) {
+                node.setRight(null);
+                return true;    // Se encontró y eliminó la hoja
+            }
+        }
+
+        // Propaga la respuesta hasta la raíz si alguna rama eliminó su hoja.
+        boolean leftDeleted = leaveDelete(node.getLeft(), value);
+        boolean rightDeleted = leaveDelete(node.getRight(), value);
+        return leftDeleted || rightDeleted;
+    }
+
+    // Elimina un nodo con un solo hijo.
+    private boolean onlyChildDelete(TreeNode node, Integer value) {
+        if(node == null) {
+            return false;
+        }
+
+        if(node.getLeft() != null && node.getLeft().getValue().equals(value)) {
+            if(node.getLeft().getLeft() == null || node.getLeft().getRight() == null) {
+                if(node.getLeft().getLeft() != null) {
+                    node.setLeft(node.getLeft().getLeft());
+                }
+                if(node.getRight().getRight() != null) {
+                    node.setLeft(node.getLeft().getRight());
+                }
+                return true;
+            }
+        }
+
+        if(node.getRight() != null && node.getRight().getValue().equals(value)) {
+            if(node.getRight().getLeft() == null || node.getRight().getRight() == null) {
+                if(node.getRight().getLeft() != null) {
+                    node.setRight(node.getRight().getLeft());
+                }
+                if(node.getRight().getRight() != null) {
+                    node.setRight(node.getRight().getRight());
+                }
+                return true;
+            }
+        }
+
+        boolean leftDeleted = onlyChildDelete(node.getLeft(), value);
+        boolean rightDeleted = onlyChildDelete(node.getRight(), value);
+        return leftDeleted || rightDeleted;
+    }
+
+    private boolean twoChildrenDelete(TreeNode node, Integer value) {
+        if(node == null) {
+            return false;
+        }
+
+        // Verificamos si el nodo actual tiene el valor buscado.
+        if(node.getValue().equals(value)) {
+            if(node.getRight() != null) {
+                // Utilizamos un aux para no perder el nodo actual (asi más adelante lo reemplazamos por el valor
+                // del NMI)
+                TreeNode aux = node.getRight();
+                while(aux.getLeft() != null) {  // Recorremos el lado izq hasta llegar al último nodo
+                    aux = aux.getLeft();
+                }
+                node.setValue(aux.getValue()); // Se reemplaza el valor encontrado
+                delete(aux.getValue()); // Eliminamos el NMI que ya utilizamos para reemplazar el valor a eliminar.
+                return true;    // Se corta la recursión
+            }
+        }
+
+        // Si ya se eliminó el nodo, no seguir recorriendo
+        if (twoChildrenDelete(node.getLeft(), value)) {
+            return true;
+        }
+
+        return twoChildrenDelete(node.getRight(), value);
+    }
+
+    public void delete(Integer value) {
+        if(this.isEmpty()) {
+            return;
+        }
+        if(!leaveDelete(this.root, value)) {
+            if(!onlyChildDelete(this.root, value)) {
+                twoChildrenDelete(this.root, value);
+            }
+        }
+    }
 }

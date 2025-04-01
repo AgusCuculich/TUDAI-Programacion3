@@ -1,6 +1,6 @@
 ## Imagen ilustrativa del recorrido para devolver las hojas (getLeaves)
 
-[recorridoHojas.jpg](../../../../img/recorridoHojas.jpg)
+<img src="../../../../img/recorridoHojas.jpg">
 
 ## Explicación gráfica del funcionamiento de heightOfTree
 
