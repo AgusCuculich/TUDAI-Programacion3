@@ -30,11 +30,11 @@ public class Main {
 
         // Árbol 4
         arbol.add(10);
-        /*arbol.add(5);
+        arbol.add(5);
         arbol.add(2);
         arbol.add(30);
         arbol.add(25);
-        arbol.add(45);*/
+        arbol.add(45);
 
         /*System.out.println(arbol.getElemAtLevel(1));
         System.out.println(arbol.getFrontera());
@@ -43,5 +43,7 @@ public class Main {
         System.out.println('\n');
         arbol.delete(10);
         arbol.printPreOrden();
+        //System.out.println(arbol.collectLeavesAbove(20));
+        //System.out.println(arbol.sumInternalNodes());
     }
 }

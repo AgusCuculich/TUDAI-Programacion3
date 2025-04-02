@@ -10,6 +10,9 @@ public class Tree {
         this.root = null;
     }
 
+
+    // Ejercicio 1
+
     public void add(Integer value) {
         if (this.root == null)
             // En caso de que no exista un nodo raíz, lo creamos con el valor pasado a la función.
@@ -244,104 +247,170 @@ public class Tree {
         return heightOfTree(this.root);
     }
 
-    // Elimina una hoja
-    private boolean leaveDelete(TreeNode node, Integer value) {
+    private boolean delete(TreeNode node, Integer value) {
         if(node == null) {
             return false;
         }
 
-        // Verifica si el hijo izquierdo es una hoja y debe ser eliminado
-        if(node.getLeft() != null && node.getLeft().getValue().equals(value)) {
-            if(node.getLeft().getLeft() == null && node.getLeft().getRight() == null) {
-                node.setLeft(null);
-                return true;    // Se encontró y eliminó la hoja
-            }
-        }
-        // Verifica si el hijo derecho es una hoja y debe ser eliminado
-        if(node.getRight() != null && node.getRight().getValue().equals(value)) {
-            if(node.getRight().getLeft() == null && node.getRight().getRight() == null) {
-                node.setRight(null);
-                return true;    // Se encontró y eliminó la hoja
-            }
-        }
+        // Verifica si el hijo izquierdo contiene el valor buscado.
+        if(value < node.getValue()) {
+            if(node.getLeft() != null && node.getLeft().getValue().equals(value)) {
 
-        // Propaga la respuesta hasta la raíz si alguna rama eliminó su hoja.
-        boolean leftDeleted = leaveDelete(node.getLeft(), value);
-        boolean rightDeleted = leaveDelete(node.getRight(), value);
-        return leftDeleted || rightDeleted;
-    }
-
-    // Elimina un nodo con un solo hijo.
-    private boolean onlyChildDelete(TreeNode node, Integer value) {
-        if(node == null) {
-            return false;
-        }
-
-        if(node.getLeft() != null && node.getLeft().getValue().equals(value)) {
-            if(node.getLeft().getLeft() == null || node.getLeft().getRight() == null) {
-                if(node.getLeft().getLeft() != null) {
-                    node.setLeft(node.getLeft().getLeft());
+                // ----------------------------------------------------------- ELIMINAR HOJA
+                if(node.getLeft().getLeft() == null && node.getLeft().getRight() == null) {
+                    node.setLeft(null);
+                    return true;
                 }
-                if(node.getRight().getRight() != null) {
-                    node.setLeft(node.getLeft().getRight());
+                //--------------------------------------------------------------------------
+
+
+                // ------------------------------------------- ELIMINAR NODO CON UN SOLO HIJO
+                if(node.getLeft().getLeft() == null || node.getLeft().getRight() == null) {
+                    if(node.getLeft().getLeft() != null) {
+                        node.setLeft(node.getLeft().getLeft());
+                    } else if (node.getRight().getRight() != null) {
+                        node.setLeft(node.getLeft().getRight());
+                    }
+                    return true;
                 }
-                return true;
+                //--------------------------------------------------------------------------
             }
         }
 
-        if(node.getRight() != null && node.getRight().getValue().equals(value)) {
-            if(node.getRight().getLeft() == null || node.getRight().getRight() == null) {
-                if(node.getRight().getLeft() != null) {
-                    node.setRight(node.getRight().getLeft());
+
+        // Verifica si el hijo derecho contiene el valor buscado.
+        if(value > node.getValue()) {
+            if(node.getRight() != null && node.getRight().getValue().equals(value)) {
+
+                // ----------------------------------------------------------- ELIMINAR HOJA
+                if(node.getRight().getLeft() == null && node.getRight().getRight() == null) {
+                    node.setRight(null);
+                    return true;
                 }
-                if(node.getRight().getRight() != null) {
-                    node.setRight(node.getRight().getRight());
+                //--------------------------------------------------------------------------
+
+
+                // ------------------------------------------- ELIMINAR NODO CON UN SOLO HIJO
+                if(node.getRight().getLeft() == null || node.getRight().getRight() == null) {
+                    if(node.getRight().getLeft() != null) {
+                        node.setRight(node.getRight().getLeft());
+                    } else if(node.getRight().getRight() != null) {
+                        node.setRight(node.getRight().getRight());
+                    }
+                    return true;
                 }
-                return true;
+                //--------------------------------------------------------------------------
             }
         }
 
-        boolean leftDeleted = onlyChildDelete(node.getLeft(), value);
-        boolean rightDeleted = onlyChildDelete(node.getRight(), value);
-        return leftDeleted || rightDeleted;
-    }
-
-    private boolean twoChildrenDelete(TreeNode node, Integer value) {
-        if(node == null) {
-            return false;
-        }
-
-        // Verificamos si el nodo actual tiene el valor buscado.
-        if(node.getValue().equals(value)) {
-            if(node.getRight() != null) {
-                // Utilizamos un aux para no perder el nodo actual (asi más adelante lo reemplazamos por el valor
-                // del NMI)
+        // ------------------------------------------------- ELIMINAR NODO CON DOS HIJOS
+        // Verifica si el valor sobre el que esta parado es el buscado
+        if (node.getValue().equals(value)) {
+            if (node.getRight() != null) {
                 TreeNode aux = node.getRight();
-                while(aux.getLeft() != null) {  // Recorremos el lado izq hasta llegar al último nodo
+                TreeNode parent = node; // Guardamos el padre de `aux`
+
+                // 🔹 Buscamos el Nodo Más Izquierdo del subárbol derecho
+                while (aux.getLeft() != null) {
+                    parent = aux;  // Guardamos referencia al padre de `aux`
                     aux = aux.getLeft();
                 }
-                node.setValue(aux.getValue()); // Se reemplaza el valor encontrado
-                delete(aux.getValue()); // Eliminamos el NMI que ya utilizamos para reemplazar el valor a eliminar.
-                return true;    // Se corta la recursión
+
+                node.setValue(aux.getValue());
+                if (parent.getLeft() == aux) {  // Si aux es el hijo izquierdo de parent
+                    parent.setLeft(null);
+                } else {
+                    parent.setRight(aux.getRight());
+                }
+
+                System.out.println("aux eliminado: " + aux.getValue());
+                return true;
             }
         }
+        //--------------------------------------------------------------------------
 
-        // Si ya se eliminó el nodo, no seguir recorriendo
-        if (twoChildrenDelete(node.getLeft(), value)) {
+
+        if(delete(node.getLeft(), value)) {
             return true;
         }
 
-        return twoChildrenDelete(node.getRight(), value);
+        return delete(node.getRight(), value);
     }
 
     public void delete(Integer value) {
         if(this.isEmpty()) {
             return;
         }
-        if(!leaveDelete(this.root, value)) {
-            if(!onlyChildDelete(this.root, value)) {
-                twoChildrenDelete(this.root, value);
-            }
+        if(this.root.getValue().equals(value) && this.root.getLeft() == null && this.root.getRight() == null) {
+            this.root = null;
+            return;
+        }
+        delete(this.root, value);
+    }
+
+
+
+
+
+
+
+    // Ejercicio 3
+
+    private List<Integer> collectLeavesAbove(TreeNode node, int value) {
+        if(node == null) {
+            return new ArrayList<>();
+        }
+        if(node.getValue() > value && node.getLeft() == null && node.getRight() == null) {
+            ArrayList<Integer> leaf = new ArrayList<>();
+            leaf.add(node.getValue());
+            return leaf;
+        }
+
+        List<Integer> leftLeaves = collectLeavesAbove(node.getLeft(), value);
+        List<Integer> rightLeaves = collectLeavesAbove(node.getRight(), value);
+        leftLeaves.addAll(rightLeaves);
+        return leftLeaves;
+    }
+
+    // Devuelve una lista con los valores de las hojas mayores a x.
+    public List<Integer> collectLeavesAbove(int value) {
+        if(this.isEmpty()) {
+            return new ArrayList<>();
+        }
+        if(value >= this.root.getValue()) {
+            return collectLeavesAbove(this.root.getRight(), value);
+        } else {
+            return collectLeavesAbove(this.root, value);
         }
     }
+
+
+
+
+
+
+    // Ejercicio 2
+
+    private int sumInternalNodes(TreeNode node) {
+        if(node == null) {
+            return 0;
+        }
+        int sum = 0;
+        if (node.getLeft() != null || node.getRight() != null) {
+            sum += node.getValue();
+        }
+        sum += sumInternalNodes(node.getLeft());
+        sum += sumInternalNodes(node.getRight());
+        return sum;
+    }
+
+    // Retorna la suma de todos los nodos internos del árbol.
+    public int sumInternalNodes() {
+        if(this.isEmpty()) {
+            return 0;
+        }
+        return sumInternalNodes(this.root);
+    }
+
+
 }
