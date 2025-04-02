@@ -247,93 +247,117 @@ public class Tree {
         return heightOfTree(this.root);
     }
 
+    private boolean deleteLeftChild(TreeNode node, Integer value) {
+        // Si el valor del nodo izq del nodo en el que estamos parados es igual al valor buscado.
+        if(node.getLeft() != null && node.getLeft().getValue().equals(value)) {
+
+            // ----------------------------------------------------------- ELIMINAR HOJA
+            // El izq del izq es null y el derecho del izq es null
+            if(node.getLeft().getLeft() == null && node.getLeft().getRight() == null) {
+                node.setLeft(null);
+                return true;
+            }
+            //--------------------------------------------------------------------------
+
+
+            // ------------------------------------------- ELIMINAR NODO CON UN SOLO HIJO
+            // Explicado en el lado derecho
+            if(node.getLeft().getLeft() == null || node.getLeft().getRight() == null) {
+                if(node.getLeft().getLeft() != null) {
+                    node.setLeft(node.getLeft().getLeft());
+                } else if (node.getLeft().getRight() != null) {
+                    node.setLeft(node.getLeft().getRight());
+                }
+                return true;
+            }
+            //--------------------------------------------------------------------------
+        }
+        return false;
+    }
+
+    private boolean deleteRightChild(TreeNode node, Integer value) {
+        // Si el valor del nodo derecho del nodo en el que estamos parados es igual al valor buscado.
+        if(node.getRight() != null && node.getRight().getValue().equals(value)) {
+
+            // ----------------------------------------------------------- ELIMINAR HOJA
+            // El izq del derecho es null y el derecho del derecho es null
+            if(node.getRight().getLeft() == null && node.getRight().getRight() == null) {
+                node.setRight(null);
+                return true;
+            }
+            //--------------------------------------------------------------------------
+
+
+            // ------------------------------------------- ELIMINAR NODO CON UN SOLO HIJO
+            // Si un nodo tiene cero o un hijo, entonces podemos reemplazarlo con su único hijo.
+            if(node.getRight().getLeft() == null || node.getRight().getRight() == null) {
+                // Si el hijo izq del derecho NO es null, significa que el nodo a eliminar solo tiene un hijo izquierdo
+                if(node.getRight().getLeft() != null) {
+                    node.setRight(node.getRight().getLeft());   // Reemplazamos el nodo derecho con su hijo izquierdo.
+                // Si el hijo derecho del derecho NO es null, significa que el nodo a eliminar solo tiene un hijo der.
+                } else if(node.getRight().getRight() != null) {
+                    node.setRight(node.getRight().getRight());  // Reemplazamos el nodo derecho con su hijo derecho.
+                }
+                return true;
+            }
+            //--------------------------------------------------------------------------
+        }
+        return false;
+    }
+
+    private boolean removeNodeWithTwoChildren(TreeNode node) {
+        // ------------------------------------------------- ELIMINAR NODO CON DOS HIJOS
+        if (node.getRight() != null) {
+            // Utilizamos un aux para no perder el nodo a reemplazar y recorrer el árbol hasta encontra el NMI.
+            // El padre sirve para eliminar aux una vez realizado el reemplazo.
+            TreeNode aux = node.getRight();
+            TreeNode parent = node; // Guardamos el padre de `aux`
+
+            // Buscamos el Nodo Más Izquierdo del subárbol derecho
+            while (aux.getLeft() != null) {
+                parent = aux;  // Guardamos referencia al padre de `aux`
+                aux = aux.getLeft();
+            }
+
+            node.setValue(aux.getValue());  // Remplazamos el valor del nodo a eliminar con el del NMI
+            if (parent.getLeft() == aux) {  // Caso: viaje por la derecha y luego por la izq.
+                parent.setLeft(null);
+            } else {    // Caso: viaje por la derecha (no hay elementos a la izq de este -> es hoja)
+                parent.setRight(aux.getRight());
+            }
+            return true;
+        }
+        return false;
+        //--------------------------------------------------------------------------
+    }
+
     private boolean delete(TreeNode node, Integer value) {
         if(node == null) {
             return false;
         }
 
         // Verifica si el hijo izquierdo contiene el valor buscado.
-        if(value < node.getValue()) {
-            if(node.getLeft() != null && node.getLeft().getValue().equals(value)) {
-
-                // ----------------------------------------------------------- ELIMINAR HOJA
-                if(node.getLeft().getLeft() == null && node.getLeft().getRight() == null) {
-                    node.setLeft(null);
-                    return true;
-                }
-                //--------------------------------------------------------------------------
-
-
-                // ------------------------------------------- ELIMINAR NODO CON UN SOLO HIJO
-                if(node.getLeft().getLeft() == null || node.getLeft().getRight() == null) {
-                    if(node.getLeft().getLeft() != null) {
-                        node.setLeft(node.getLeft().getLeft());
-                    } else if (node.getRight().getRight() != null) {
-                        node.setLeft(node.getLeft().getRight());
-                    }
-                    return true;
-                }
-                //--------------------------------------------------------------------------
-            }
-        }
-
-
-        // Verifica si el hijo derecho contiene el valor buscado.
-        if(value > node.getValue()) {
-            if(node.getRight() != null && node.getRight().getValue().equals(value)) {
-
-                // ----------------------------------------------------------- ELIMINAR HOJA
-                if(node.getRight().getLeft() == null && node.getRight().getRight() == null) {
-                    node.setRight(null);
-                    return true;
-                }
-                //--------------------------------------------------------------------------
-
-
-                // ------------------------------------------- ELIMINAR NODO CON UN SOLO HIJO
-                if(node.getRight().getLeft() == null || node.getRight().getRight() == null) {
-                    if(node.getRight().getLeft() != null) {
-                        node.setRight(node.getRight().getLeft());
-                    } else if(node.getRight().getRight() != null) {
-                        node.setRight(node.getRight().getRight());
-                    }
-                    return true;
-                }
-                //--------------------------------------------------------------------------
-            }
-        }
-
-        // ------------------------------------------------- ELIMINAR NODO CON DOS HIJOS
-        // Verifica si el valor sobre el que esta parado es el buscado
-        if (node.getValue().equals(value)) {
-            if (node.getRight() != null) {
-                TreeNode aux = node.getRight();
-                TreeNode parent = node; // Guardamos el padre de `aux`
-
-                // 🔹 Buscamos el Nodo Más Izquierdo del subárbol derecho
-                while (aux.getLeft() != null) {
-                    parent = aux;  // Guardamos referencia al padre de `aux`
-                    aux = aux.getLeft();
-                }
-
-                node.setValue(aux.getValue());
-                if (parent.getLeft() == aux) {  // Si aux es el hijo izquierdo de parent
-                    parent.setLeft(null);
-                } else {
-                    parent.setRight(aux.getRight());
-                }
-
-                System.out.println("aux eliminado: " + aux.getValue());
-                return true;
-            }
-        }
-        //--------------------------------------------------------------------------
-
-
-        if(delete(node.getLeft(), value)) {
+        if (value < node.getValue() && deleteLeftChild(node, value)) {
             return true;
         }
 
+        // Verifica si el hijo derecho contiene el valor buscado.
+        if (value > node.getValue() && deleteRightChild(node, value)) {
+            return true;
+        }
+
+        // Verifica si el valor sobre el que esta parado es el buscado
+        if (node.getValue().equals(value) && removeNodeWithTwoChildren(node)) {
+            return true;
+        }
+
+        // 1. Se intenta eliminar el valor en el subárbol izquierdo (node.getLeft())
+        // 2. Si delete(node.getLeft(), value) devuelve true, significa que el nodo fue encontrado y eliminado.
+        // 3. En este caso, se retorna inmediatamente true y se detiene la ejecución, evitando buscar en el subárbol
+        // derecho innecesariamente
+        if (delete(node.getLeft(), value)) {
+            return true;
+        }
         return delete(node.getRight(), value);
     }
 
