@@ -4,52 +4,24 @@
 import practico_1.MySimpleLinkedList;
 
 MySimpleLinkedList<Integer> numeros = new MySimpleLinkedList<>();
-numeros.
+numeros.insertFront(2);
+numeros.insertFront(5);
+numeros.insertFront(7);
 
-insertFront(2);
-numeros.
-
-insertFront(5);
-numeros.
-
-insertFront(7);
-
-System.out.
-
-println(numeros.size());
-        System.out.
-
-println(numeros);
-System.out.
-
-println(numeros.get(2));
-        System.out.
-
-println(numeros.indexOf(7));
+System.out.println(numeros.size());
+System.out.println(numeros);
+System.out.println(numeros.get(2));
+System.out.println(numeros.indexOf(7));
 
 MySimpleLinkedList<String> nombres = new MySimpleLinkedList<>();
-nombres.
+nombres.insertFront("Pablo");
+nombres.insertFront("Jimena");
+nombres.insertFront("Tomás");
 
-insertFront("Pablo");
-nombres.
-
-insertFront("Jimena");
-nombres.
-
-insertFront("Tomás");
-
-System.out.
-
-println(nombres);
-System.out.
-
-println(nombres.size());
-        System.out.
-
-println(nombres.indexOf("pablo"));
-        System.out.
-
-println(nombres.get(1));
+System.out.println(nombres);
+System.out.println(nombres.size());
+System.out.println(nombres.indexOf("pablo"));
+System.out.println(nombres.get(1));
 ````
 
 2.
@@ -61,33 +33,20 @@ import practico_1.LinkedListIterator;
 import practico_1.MySimpleLinkedList;
 
 MySimpleLinkedList<String> nombres = new MySimpleLinkedList<>();
-nombres.
-
-insertFront("Pablo");
-nombres.
-
-insertFront("Jimena");
-nombres.
-
-insertFront("Tomás");
+nombres.insertFront("Pablo");
+nombres.insertFront("Jimena");
+nombres.insertFront("Tomás");
 
 // Iterator con WHILE
 LinkedListIterator<String> it = nombres.iterator();
-while(it.
-
-hasNext()){
-        System.out.
-
-println(it.next());
-        }
+while(it.hasNext()){
+    System.out.println(it.next());
+}
 
 // Iterator con FOREACH
 // No es necesario instanciar un iterator ya que el propio foreach lo hace por nosotros.
-        for(
-String nombre :nombres){
-        System.out.
-
-println(nombre);
+for(String nombre :nombres){
+    System.out.println(nombre);
 }
 ```
 
@@ -98,45 +57,21 @@ a)
 import practico_1.MySimpleLinkedList;
 
 MySimpleLinkedList<Integer> list1 = new MySimpleLinkedList<>();
-list1.
-
-insertFront(20);
-list1.
-
-insertFront(22);
-list1.
-
-insertFront(30);
-list1.
-
-insertFront(10);
-list1.
-
-insertFront(15);
+list1.insertFront(20);
+list1.insertFront(22);
+list1.insertFront(30);
+list1.insertFront(10);
+list1.insertFront(15);
 
 MySimpleLinkedList<Integer> list2 = new MySimpleLinkedList<>();
-list2.
+list2.insertFront(30);
+list2.insertFront(5);
+list2.insertFront(20);
+list2.insertFront(10);
+list2.insertFront(35);
 
-insertFront(30);
-list2.
-
-insertFront(5);
-list2.
-
-insertFront(20);
-list2.
-
-insertFront(10);
-list2.
-
-insertFront(35);
-
-System.out.
-
-println(list1);
-System.out.
-
-println(list2);
+System.out.println(list1);
+System.out.println(list2);
 ````
 b)
 
