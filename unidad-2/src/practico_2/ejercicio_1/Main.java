@@ -29,20 +29,32 @@ public class Main {
         arbol.add(8);*/
 
         // Árbol 4
-        arbol.add(10);
+        /*arbol.add(10);
         arbol.add(5);
-        arbol.add(2);
+        arbol.add(7);
         arbol.add(30);
         arbol.add(25);
-        arbol.add(45);
+        arbol.add(45);*/
+
+        // Árbol 5
+        arbol.add(13);
+        arbol.add(4);
+        arbol.add(1);
+        arbol.add(7);
+        arbol.add(6);
+        arbol.add(10);
+        arbol.add(18);
+        arbol.add(15);
+        arbol.add(16);
+        arbol.add(20);
 
         /*System.out.println(arbol.getElemAtLevel(1));
         System.out.println(arbol.getFrontera());
         System.out.println(arbol.getHeight());*/
-        arbol.printPreOrden();
+        /*arbol.printPreOrden();
         System.out.println('\n');
-        arbol.delete(10);
-        arbol.printPreOrden();
+        arbol.delete(30);
+        arbol.printPreOrden();*/
         //System.out.println(arbol.collectLeavesAbove(20));
         //System.out.println(arbol.sumInternalNodes());
     }
