@@ -217,7 +217,7 @@ public class GrafoDirigido<T> implements Grafo<T> {
         }
     }
 
-    public void DFS_Visit(Integer verticeId){
+    private void DFS_Visit(Integer verticeId){
         //Marcamos el vértice como visitado (amarillo)
         this.estadoVertices.put(verticeId,'A');
         // Creamos un iterador de todos los vertices adyacentes del que estamos posicionados
@@ -232,5 +232,38 @@ public class GrafoDirigido<T> implements Grafo<T> {
         }
         // Una vez que recorrimos todos los adyecentes de este vértice, lo pintamos de negro
         this.estadoVertices.put(verticeId, 'N');
+    }
+
+    public void BFS() {
+        // Creamos una fila vacía
+        LinkedList<Integer> queue = new LinkedList<>();
+        Set<Map.Entry<Integer, Character>> entries = this.estadoVertices.entrySet();
+
+        // Para cada vértice del mapa de estados, los pintamos de blanco
+        for(Map.Entry<Integer, Character> entry : entries) {
+            entry.setValue('B');
+        }
+
+        for(Map.Entry<Integer, Character> entry : entries) {
+            if(entry.getValue().equals('B')) {
+                BFS_Visit(entry.getKey(), queue);
+            }
+        }
+    }
+
+    private void BFS_Visit(Integer verticeId, LinkedList<Integer> queue) {
+        this.estadoVertices.put(verticeId, 'N');
+        queue.add(verticeId);
+        while(!queue.isEmpty()) {
+            int first = queue.poll(); // Elimina y devuelve el primero (o null si vacío).
+            Iterator<Integer> adyacentes = obtenerAdyacentes(first);
+            while(adyacentes.hasNext()) {
+                int currentAd = adyacentes.next();
+                if(this.estadoVertices.get(currentAd).equals('B')) {
+                    this.estadoVertices.put(currentAd, 'N');
+                    queue.add(currentAd);
+                }
+            }
+        }
     }
 }
