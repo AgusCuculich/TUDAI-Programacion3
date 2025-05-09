@@ -26,6 +26,8 @@ public class RecorridoDFS<T> extends MapaDeEstadosDeRecorrido<T> {
             //Si el vértice esta sin visitar (blanco)
             if (entry.getValue().equals('B')){
                 DFS_Visit(entry.getKey());
+            } else if(entry.getValue().equals('A')) {
+                System.out.println("Ciclo hallado");
             }
         }
     }
