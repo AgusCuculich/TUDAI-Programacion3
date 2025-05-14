@@ -18,10 +18,7 @@ public class RecorridoBFS<T> extends MapaDeEstadosDeRecorrido<T> {
         LinkedList<Integer> queue = new LinkedList<>();
         Set<Map.Entry<Integer, Character>> entries = super.estadoVertices.entrySet();
 
-        // Para cada vértice del mapa de estados, los pintamos de blanco
-        for(Map.Entry<Integer, Character> entry : entries) {
-            entry.setValue('B');
-        }
+        super.limpiarEstructura();
 
         for(Map.Entry<Integer, Character> entry : entries) {
             if(entry.getValue().equals('B')) {

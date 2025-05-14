@@ -17,10 +17,7 @@ public class RecorridoDFS<T> extends MapaDeEstadosDeRecorrido<T> {
         // (el set tiene las mismas referencias que el mapa)
         Set<Map.Entry<Integer, Character>> entries = super.estadoVertices.entrySet();
 
-        //Para cada vértice del mapa de estados, los pintamos de blanco
-        for(Map.Entry<Integer,Character> entry : entries){
-            entry.setValue('B');
-        }
+        super.limpiarEstructura();
 
         for(Map.Entry<Integer,Character> entry : entries){
             //Si el vértice esta sin visitar (blanco)
